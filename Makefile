@@ -1,7 +1,6 @@
 NODE_IP=10.0.0.23
 DHCP_IP=10.0.0.148
 
-# TALOS_VERSION=v1.7.6
 OUTPUT_DIR=out
 YQ_ARGS=--prettyPrint --no-colors --inplace
 TALOS_NODECONF=$(OUTPUT_DIR)/controlplane.yaml
@@ -10,18 +9,12 @@ TALOS_CONFIG=$(OUTPUT_DIR)/talosconfig
 .PHONY: build kustomize talos-config
 build: talos-config kubeseal
 
-# bin/talosctl:
-# 	@echo "Installing talosctl to talosctl"
-# 	mkdir -p bin
-# 	curl -Lo talosctl --silent https://github.com/siderolabs/talos/releases/download/$(TALOS_VERSION)/talosctl-linux-amd64
-# 	chmod +x talosctl
-
 $(OUTPUT_DIR)/talos-secrets.yaml:
 	mkdir -p out
 	talosctl gen secrets --output-file "$@"
 kustomize:
 	mkdir -p out
-#	kubectl kustomize ./infra/argocd > $(OUTPUT_DIR)/infra-argocd.yaml
+	kubectl kustomize ./infra/argocd > $(OUTPUT_DIR)/infra-argocd.yaml
 #	kubectl kustomize --enable-helm ./infra/traefik > $(OUTPUT_DIR)/infra-traefik.yaml
 	kubectl kustomize --enable-helm ./infra/cillium > $(OUTPUT_DIR)/infra-cillium.yaml
 
@@ -34,7 +27,7 @@ talos-config: $(OUTPUT_DIR)/talos-secrets.yaml kustomize
 		--with-secrets "$(OUTPUT_DIR)/talos-secrets.yaml"
 	yq eval $(YQ_ARGS) '.machine.network.interfaces[0].addresses[0] = "$(NODE_IP)/24"'                       $(TALOS_NODECONF)
 #	yq eval $(YQ_ARGS) '.cluster.inlineManifests[0].contents = load_str("secrets/eso-k8s-token.yaml")' $(TALOS_NODECONF)
-#	yq eval $(YQ_ARGS) '.cluster.inlineManifests[1].contents = load_str("$(OUTPUT_DIR)/infra-argocd.yaml")'  $(TALOS_NODECONF)
+	yq eval $(YQ_ARGS) '.cluster.inlineManifests[1].contents = load_str("$(OUTPUT_DIR)/infra-argocd.yaml")'  $(TALOS_NODECONF)
 	yq eval $(YQ_ARGS) '.cluster.inlineManifests[2].contents = load_str("$(OUTPUT_DIR)//infra-cillium.yaml")'  $(TALOS_NODECONF)
 #	yq eval $(YQ_ARGS) '.cluster.inlineManifests[3].contents = load_str("$(OUTPUT_DIR)/infra-traefik.yaml")'  $(TALOS_NODECONF)
 	yq eval $(YQ_ARGS) '.cluster.inlineManifests[4].contents = load_str("infra/auto-untaint.yaml")'  $(TALOS_NODECONF)
