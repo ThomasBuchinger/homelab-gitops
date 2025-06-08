@@ -31,7 +31,7 @@ spec:
     spec:
       project: apps
       source:
-        repoURL: https://github.com/thomasbuchinger/prod-gitops
+        repoURL: https://github.com/thomasbuchinger/homelab-gitops
         targetRevision: '{{rev}}'
         path: '{{path}}'
       destination:
