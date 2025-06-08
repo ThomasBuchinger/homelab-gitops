@@ -41,8 +41,9 @@ ingressController:
   hostNetwork:
     enabled: true
     sharedListenerPort: 80
-  # service:
-  #   type: NodePort
+  service:
+    type: ClusterIP
+    externalTrafficPolicy: "~"
   #   insecureNodePort: 80
   #   secureNodePort: 443
 nodePort:

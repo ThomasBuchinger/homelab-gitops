@@ -1,4 +1,6 @@
-charts
-/out
-/secrets
 kubeconfig
+devboc.lock
+/out/
+/secrets/
+
+charts

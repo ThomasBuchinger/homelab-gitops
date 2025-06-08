@@ -1,5 +1,5 @@
 NODE_IP=10.0.0.23
-DHCP_IP=10.0.0.148
+DHCP_IP=10.0.0.23
 
 OUTPUT_DIR=out
 YQ_ARGS=--prettyPrint --no-colors --inplace
@@ -20,7 +20,7 @@ kustomize:
 
 talos-config: $(OUTPUT_DIR)/talos-secrets.yaml kustomize
 	mkdir -p $(OUTPUT_DIR)/talos
-	talosctl gen config prod https://$(NODE_IP):6443 \
+	talosctl gen config homelab https://$(NODE_IP):6443 \
 		--force \
 		--config-patch=@talos/talos-merge.yaml \
 		--output-dir "$(OUTPUT_DIR)" \
@@ -32,7 +32,7 @@ talos-config: $(OUTPUT_DIR)/talos-secrets.yaml kustomize
 #	yq eval $(YQ_ARGS) '.cluster.inlineManifests[3].contents = load_str("$(OUTPUT_DIR)/infra-traefik.yaml")'  $(TALOS_NODECONF)
 	yq eval $(YQ_ARGS) '.cluster.inlineManifests[4].contents = load_str("infra/auto-untaint.yaml")'  $(TALOS_NODECONF)
 #	yq eval $(YQ_ARGS) '.cluster.inlineManifests[5].contents = load_str("secrets/cluster-secrets.yaml")'  $(TALOS_NODECONF)
-	yq eval $(YQ_ARGS) '.contexts.prod.endpoints[0] = "$(NODE_IP)"'                                          $(TALOS_CONFIG)
+	yq eval $(YQ_ARGS) '.contexts.homelab.endpoints[0] = "$(NODE_IP)"'                                          $(TALOS_CONFIG)
 
 talos-init: talos-config
 	talosctl apply-config --insecure --nodes $(DHCP_IP) --file $(TALOS_NODECONF)

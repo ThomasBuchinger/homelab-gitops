@@ -5,8 +5,12 @@ metadata:
 spec:
   generators:
   - list:
-      elements: []
+      elements:
       # == Cluster Infra ===
+      - name: headlamp
+        rev: main
+        path: gitops/eheadlamp
+        wave: "1"
       # - name: external-secrets
       #   rev: main
       #   path: gitops/external-secrets/base
