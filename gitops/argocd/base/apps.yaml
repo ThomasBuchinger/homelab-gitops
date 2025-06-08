@@ -8,8 +8,8 @@ spec:
       elements:
       # == Cluster Infra ===
       - name: headlamp
-        rev: main
-        path: gitops/eheadlamp
+        rev: feat-headlamp
+        path: gitops/headlamp
         wave: "1"
       # - name: external-secrets
       #   rev: main
