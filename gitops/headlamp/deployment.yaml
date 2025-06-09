@@ -60,12 +60,12 @@ spec:
         - name: headlamp
           image: ghcr.io/headlamp-k8s/headlamp:v0.31.1
           args:
-            - "-in-cluster"
-            - "-plugins-dir=/headlamp/plugins"
-            - "-oidc-idp-issuer-url=https://dex.buc.sh"
-            - "-oidc-client-id=login"
-            # - "-oidc-client-secret"
-            - "-oidc-scopes=profile,email,groups"
+            - -in-cluster
+            - -plugins-dir=/headlamp/plugins
+            - -oidc-idp-issuer-url=https://dex.buc.sh
+            - -oidc-client-id=login
+            - -oidc-client-secret=""
+            - -oidc-scopes=profile,email,groups
           env:
             - name: HEADLAMP_CONFIG_METRICS_ENABLED
               value: "true"

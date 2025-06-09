@@ -31,6 +31,13 @@ machine:
       enabled: true
       port: 7445
 cluster:
+  apiServer:
+    extraArgs:
+      oidc-issuer-url: https://dex.buc.sh
+      oidc-client-id: login
+      oidc-username-claim: email
+      oidc-groups-claim: groups
+      # oidc-groups-prefix: 'oidc:'
   network:
     cni:
       name: none
