@@ -64,8 +64,8 @@ spec:
             - -plugins-dir=/headlamp/plugins
             - -oidc-idp-issuer-url=https://dex.buc.sh
             - -oidc-client-id=login
-            - -oidc-client-secret="notaSecretDexisLocal"
-            - -oidc-scopes=profile,email,groups
+            - -oidc-client-secret=notaSecretDexisLocal
+            - -oidc-scopes=email,groups
           env:
             - name: HEADLAMP_CONFIG_METRICS_ENABLED
               value: "true"
